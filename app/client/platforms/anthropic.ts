@@ -1,5 +1,5 @@
 import { ACCESS_CODE_PREFIX, Anthropic, ApiPath } from "@/app/constant";
-import { ChatOptions, getHeaders, LLMApi, MultimodalContent,  } from "../api";
+import { ChatOptions, getHeaders, LLMApi, MultimodalContent } from "../api";
 import { useAccessStore, useAppConfig, useChatStore } from "@/app/store";
 import { getClientConfig } from "@/app/config/client";
 import { DEFAULT_API_HOST } from "@/app/constant";
@@ -190,7 +190,7 @@ export class ClaudeApi implements LLMApi {
       body: JSON.stringify(requestBody),
       signal: controller.signal,
       headers: {
-        ...getHeaders(),  // get common headers
+        ...getHeaders(), // get common headers
         "anthropic-version": accessStore.anthropicApiVersion,
         // do not send `anthropicApiKey` in browser!!!
         // Authorization: getAuthKey(accessStore.anthropicApiKey),
@@ -216,7 +216,6 @@ export class ClaudeApi implements LLMApi {
           ...payload,
           async onopen(res) {
             const contentType = res.headers.get("content-type");
-            console.log("response content type: ", contentType);
 
             if (contentType?.startsWith("text/plain")) {
               context.text = await res.clone().text();

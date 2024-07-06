@@ -47,6 +47,9 @@ const DEFAULT_ACCESS_STATE = {
   anthropicApiVersion: "2023-06-01",
   anthropicUrl: "",
 
+  // Ollama
+  ollamaUrl: "",
+
   // server config
   needCode: true,
   hideUserApiKey: false,
@@ -83,6 +86,10 @@ export const useAccessStore = createPersistStore(
       return ensure(get(), ["anthropicApiKey"]);
     },
 
+    isValidOllama() {
+      return ensure(get(), ["ollamaUrl"]);
+    },
+
     isAuthorized() {
       this.fetch();
 
@@ -92,6 +99,7 @@ export const useAccessStore = createPersistStore(
         this.isValidAzure() ||
         this.isValidGoogle() ||
         this.isValidAnthropic() ||
+        this.isValidOllama() ||
         !this.enabledAccessControl() ||
         (this.enabledAccessControl() && ensure(get(), ["accessCode"]))
       );

@@ -296,6 +296,12 @@ const cn = {
           SubTitle: "除默认地址外，必须包含 http(s)://",
         },
       },
+      Ollama: {
+        Endpoint: {
+          Title: "Ollama Endpoint",
+          SubTitle: "Must start with http(s):// or use /api/openai as default",
+        },
+      },
       Azure: {
         ApiKey: {
           Title: "接口密钥",

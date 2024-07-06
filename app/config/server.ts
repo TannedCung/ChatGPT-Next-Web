@@ -35,6 +35,9 @@ declare global {
       // google tag manager
       GTM_ID?: string;
 
+      // Ollama
+      OLLAMA_URL?: string;
+
       // custom template for preprocessing user input
       DEFAULT_INPUT_TEMPLATE?: string;
     }
@@ -105,6 +108,8 @@ export const getServerSideConfig = () => {
     process.env.WHITE_WEBDEV_ENDPOINTS ?? ""
   ).split(",");
 
+  console.log("[server_config]: ollamaUrl: ", process.env.OLLAMA_URL);
+
   return {
     baseUrl: process.env.BASE_URL,
     apiKey: getApiKey(process.env.OPENAI_API_KEY),
@@ -123,6 +128,8 @@ export const getServerSideConfig = () => {
     anthropicApiKey: getApiKey(process.env.ANTHROPIC_API_KEY),
     anthropicApiVersion: process.env.ANTHROPIC_API_VERSION,
     anthropicUrl: process.env.ANTHROPIC_URL,
+
+    ollamaUrl: process.env.OLLAMA_URL,
 
     gtmId: process.env.GTM_ID,
 
