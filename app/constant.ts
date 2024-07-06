@@ -13,6 +13,7 @@ export const OPENAI_BASE_URL = "https://api.openai.com";
 export const ANTHROPIC_BASE_URL = "https://api.anthropic.com";
 
 export const GEMINI_BASE_URL = "https://generativelanguage.googleapis.com/";
+export const OLLAMA_BASE_URL = "http://127.0.0.1:11434";
 
 export enum Path {
   Home = "/",
@@ -27,6 +28,7 @@ export enum ApiPath {
   Cors = "",
   OpenAI = "/api/openai",
   Anthropic = "/api/anthropic",
+  Ollama = "",
 }
 
 export enum SlotID {
@@ -70,12 +72,14 @@ export enum ServiceProvider {
   Azure = "Azure",
   Google = "Google",
   Anthropic = "Anthropic",
+  Ollama = "Ollama",
 }
 
 export enum ModelProvider {
   GPT = "GPT",
   GeminiPro = "GeminiPro",
   Claude = "Claude",
+  Ollama = "Ollama",
 }
 
 export const Anthropic = {
@@ -90,6 +94,11 @@ export const OpenaiPath = {
   UsagePath: "dashboard/billing/usage",
   SubsPath: "dashboard/billing/subscription",
   ListModelPath: "v1/models",
+};
+
+export const OllamaPath = {
+  OpenAICompatibleChatPath: "v1/chat/completions",
+  ChatPath: "/api/chat",
 };
 
 export const Azure = {
@@ -169,6 +178,8 @@ const anthropicModels = [
   "claude-3-5-sonnet-20240620",
 ];
 
+const OllamaModels = ["gemma2"];
+
 export const DEFAULT_MODELS = [
   ...openaiModels.map((name) => ({
     name,
@@ -195,6 +206,15 @@ export const DEFAULT_MODELS = [
       id: "anthropic",
       providerName: "Anthropic",
       providerType: "anthropic",
+    },
+  })),
+  ...OllamaModels.map((name) => ({
+    name,
+    available: true,
+    provider: {
+      id: "Ollama",
+      providerName: "Ollama",
+      providerType: "ollama",
     },
   })),
 ] as const;

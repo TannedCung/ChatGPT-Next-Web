@@ -20,7 +20,10 @@ import { prettyObject } from "../utils/format";
 import { estimateTokenLength } from "../utils/token";
 import { nanoid } from "nanoid";
 import { createPersistStore } from "../utils/store";
-import { identifyDefaultClaudeModel } from "../utils/checkers";
+import {
+  identifyDefaultClaudeModel,
+  identifyOllamaModel,
+} from "../utils/checkers";
 import { collectModelsWithDefaultModel } from "../utils/model";
 import { useAccessStore } from "./access";
 
@@ -368,6 +371,8 @@ export const useChatStore = createPersistStore(
           api = new ClientApi(ModelProvider.GeminiPro);
         } else if (identifyDefaultClaudeModel(modelConfig.model)) {
           api = new ClientApi(ModelProvider.Claude);
+        } else if (identifyOllamaModel(modelConfig.model)) {
+          api = new ClientApi(ModelProvider.Ollama);
         } else {
           api = new ClientApi(ModelProvider.GPT);
         }
@@ -552,6 +557,8 @@ export const useChatStore = createPersistStore(
           api = new ClientApi(ModelProvider.GeminiPro);
         } else if (identifyDefaultClaudeModel(modelConfig.model)) {
           api = new ClientApi(ModelProvider.Claude);
+        } else if (identifyOllamaModel(config.modelConfig.model)) {
+          api = new ClientApi(ModelProvider.Ollama);
         } else {
           api = new ClientApi(ModelProvider.GPT);
         }

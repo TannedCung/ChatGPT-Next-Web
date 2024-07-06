@@ -9,6 +9,7 @@ import { ChatMessage, ModelType, useAccessStore, useChatStore } from "../store";
 import { ChatGPTApi } from "./platforms/openai";
 import { GeminiProApi } from "./platforms/google";
 import { ClaudeApi } from "./platforms/anthropic";
+import { OllamaLLMApi } from "./platforms/ollama";
 export const ROLES = ["system", "user", "assistant"] as const;
 export type MessageRole = (typeof ROLES)[number];
 
@@ -70,7 +71,7 @@ export abstract class LLMApi {
   abstract models(): Promise<LLMModel[]>;
 }
 
-type ProviderName = "openai" | "azure" | "claude" | "palm";
+type ProviderName = "openai" | "azure" | "claude" | "palm" | "ollama";
 
 interface Model {
   name: string;
@@ -101,6 +102,9 @@ export class ClientApi {
         break;
       case ModelProvider.Claude:
         this.llm = new ClaudeApi();
+        break;
+      case ModelProvider.Ollama:
+        this.llm = new OllamaLLMApi();
         break;
       default:
         this.llm = new ChatGPTApi();
@@ -163,7 +167,11 @@ export function getHeaders() {
   const isGoogle = modelConfig.model.startsWith("gemini");
   const isAzure = accessStore.provider === ServiceProvider.Azure;
   const isAnthropic = accessStore.provider === ServiceProvider.Anthropic;
-  const authHeader = isAzure ? "api-key" : isAnthropic ? 'x-api-key' : "Authorization";
+  const authHeader = isAzure
+    ? "api-key"
+    : isAnthropic
+    ? "x-api-key"
+    : "Authorization";
   const apiKey = isGoogle
     ? accessStore.googleApiKey
     : isAzure
@@ -172,7 +180,8 @@ export function getHeaders() {
     ? accessStore.anthropicApiKey
     : accessStore.openaiApiKey;
   const clientConfig = getClientConfig();
-  const makeBearer = (s: string) => `${isAzure || isAnthropic ? "" : "Bearer "}${s.trim()}`;
+  const makeBearer = (s: string) =>
+    `${isAzure || isAnthropic ? "" : "Bearer "}${s.trim()}`;
   const validString = (x: string) => x && x.length > 0;
 
   // when using google api in app, not set auth header
@@ -185,7 +194,7 @@ export function getHeaders() {
       validString(accessStore.accessCode)
     ) {
       // access_code must send with header named `Authorization`, will using in auth middleware.
-      headers['Authorization'] = makeBearer(
+      headers["Authorization"] = makeBearer(
         ACCESS_CODE_PREFIX + accessStore.accessCode,
       );
     }

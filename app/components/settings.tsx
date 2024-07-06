@@ -54,6 +54,7 @@ import {
   Anthropic,
   Azure,
   Google,
+  OLLAMA_BASE_URL,
   OPENAI_BASE_URL,
   Path,
   RELEASE_URL,
@@ -1181,6 +1182,28 @@ export function Settings() {
                               (access) =>
                                 (access.anthropicApiVersion =
                                   e.currentTarget.value),
+                            )
+                          }
+                        ></input>
+                      </ListItem>
+                    </>
+                  )}
+                  {accessStore.provider === ServiceProvider.Ollama && (
+                    <>
+                      <ListItem
+                        title={Locale.Settings.Access.Ollama.Endpoint.Title}
+                        subTitle={
+                          Locale.Settings.Access.Ollama.Endpoint.SubTitle
+                        }
+                      >
+                        <input
+                          type="text"
+                          value={accessStore.ollamaUrl}
+                          placeholder={OLLAMA_BASE_URL}
+                          onChange={(e) =>
+                            accessStore.update(
+                              (access) =>
+                                (access.ollamaUrl = e.currentTarget.value),
                             )
                           }
                         ></input>

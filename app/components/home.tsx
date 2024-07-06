@@ -29,7 +29,10 @@ import { AuthPage } from "./auth";
 import { getClientConfig } from "../config/client";
 import { ClientApi } from "../client/api";
 import { useAccessStore } from "../store";
-import { identifyDefaultClaudeModel } from "../utils/checkers";
+import {
+  identifyDefaultClaudeModel,
+  identifyOllamaModel,
+} from "../utils/checkers";
 
 export function Loading(props: { noLogo?: boolean }) {
   return (
@@ -176,6 +179,8 @@ export function useLoadData() {
     api = new ClientApi(ModelProvider.GeminiPro);
   } else if (identifyDefaultClaudeModel(config.modelConfig.model)) {
     api = new ClientApi(ModelProvider.Claude);
+  } else if (identifyOllamaModel(config.modelConfig.model)) {
+    api = new ClientApi(ModelProvider.Ollama);
   } else {
     api = new ClientApi(ModelProvider.GPT);
   }
