@@ -1,4 +1,3 @@
-import axios, { AxiosInstance, AxiosResponse } from "axios";
 import {
   ChatOptions,
   getHeaders,
